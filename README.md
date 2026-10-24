@@ -24,9 +24,6 @@ This is an educational starter, not a production security certification. It has 
 1. Copy `.env.example` to `.env`.
 2. Replace `JWT_SECRET` with a random secret of at least 32 characters.
 3. Run `docker compose up --build`.
-4. API docs: http://localhost:8000/docs
-5. React app: http://localhost:5173
-
 SQL Server may take a minute to start. If API startup fails because SQL Server is not ready, restart the API service after SQL Server is healthy.
 ## Live Demo
 

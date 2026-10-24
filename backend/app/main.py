@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select, or_, desc
 from sqlalchemy.orm import Session
@@ -39,7 +40,6 @@ class MetadataInput(BaseModel):
     category: str = Field(min_length=1, max_length=80)
 
 def safe_filename(name: str) -> str:
-    # Only display basename; never use the supplied filename as a path.
     cleaned = re.sub(r"[^A-Za-z0-9._ -]", "_", Path(name).name).strip(" .")
     return (cleaned or "uploaded-file")[:255]
 
@@ -245,3 +245,19 @@ def audit_feed(limit: int = Query(default=100, ge=1, le=500),
         "outcome": e.outcome, "details": e.details, "created_at": e.created_at.isoformat(),
         "previous_hash": e.previous_hash, "event_hash": e.event_hash
     } for e in events]
+
+
+
+if os.path.exists("static"):
+    app.mount("/assets", StaticFiles(directory="static/assets"), name="static_assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(full_path: str):
+        if full_path.startswith(("auth", "documents", "admin", "health")):
+            raise HTTPException(status_code=404, detail="Not found")
+        
+        target_path = os.path.join("static", full_path)
+        if os.path.exists(target_path) and os.path.isfile(target_path):
+            return FileResponse(target_path)
+        
+        return FileResponse("static/index.html")

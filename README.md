@@ -28,7 +28,13 @@ This is an educational starter, not a production security certification. It has 
 5. React app: http://localhost:5173
 
 SQL Server may take a minute to start. If API startup fails because SQL Server is not ready, restart the API service after SQL Server is healthy.
+## Live Demo
 
+- **Frontend:** https://trust-vault-seven.vercel.app/
+- **Backend API Documentation:** https://trustvault-backend.vercel.app/docs
+- **Backend Health Check:** https://trustvault-backend.vercel.app/health
+- **GitHub Repository:** https://github.com/mohammadsaniya006/TrustVault
+- 
 ## Seed demo users
 For a submission, create users through the admin/seed process you implement for your environment. Do not ship fixed public credentials. The current starter intentionally does not create default accounts automatically.
 
